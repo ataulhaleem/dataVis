@@ -1,3 +1,5 @@
+dataVis provides webbased interactive plots for your data. It is meant to abstract away any command line expertise required to process large files as well as plotting options. This app can be downloaded and run on you machine as well as used here. The application provides basic plot types at the moment but is under active development. The aim is to re-use the component in a bigger application.
+
 use this app [here](https://ataulhaleem.github.io/dataVis/) or run on local machine as follows
 
 
