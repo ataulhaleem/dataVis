@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Papa from "papaparse";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -6,7 +6,6 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import dynamic from 'next/dynamic'
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
 import Button from '@mui/material/Button';
-import { padding } from "@mui/system";
 
 // Allowed extensions for input file
 const allowedExtensions = ["csv"];
@@ -16,6 +15,9 @@ const VisPheno = () => {
 	// This state will store the parsed data
 	const [col_names, setColNames] = useState([]);
 	const [data, setData] = useState([]);
+
+	// Toggle plot component
+	const [isToggled, setIsToggled] = useState(false);
 
 	// It state will contain the error when
 	// correct file extension is not used
@@ -27,17 +29,7 @@ const VisPheno = () => {
 	const [selectedYvar, setSelectedYvar] = useState();
 	const [selected_plot_type, setSelectedPlotType] = useState('');
 	const [plot_input_data, setPlotIinputData] = useState([]);
-	const [plot_layout, setPlotLayout] = useState({});
-	
-	const handleX = (val) => {
-		setSelectedXvar(val);
-		console.log(selectedXvar);
-	}
-	// const handleY = (e) => {
-	// 	// setSelectedYvar(e.target.innerHTML);
-	// 	console.log(selectedYvar);
-	// }
-
+	const [plot_layout, setPlotLayout] = useState({});	
 	const [x, setX] = useState([]);
 	const [y, setY] = useState([]);
 
@@ -86,31 +78,34 @@ const VisPheno = () => {
 			};
 		reader.readAsText(file);
 
-		// console.log(selectedXvar);
-		// console.log(selectedYvar);
-		// console.log(selected_plot_type);
-		// console.log(x);
-		// console.log(y);
-   
 	};
-	
-	useEffect(() => {
+
+	const handleXdata = () => {
 		var x_data = [];
 		for(let i=0;i < data.length;i++){
         	x_data.push(data[i][selectedXvar]);
-			};
 	    setX(x_data);
-
+		}
+	};
+	
+	const handleYdata = () => {
 		var y_data = [];
 		for(let i=0;i < data.length;i++){
         	y_data.push(data[i][selectedYvar]);
 			};
 	    setY(y_data);
-	})
+	}
 
+
+	
+
+	useEffect(() => {
+		handleXdata();
+		handleYdata();
+		handlePLOT();
+	  },[x,y,selectedXvar, selectedYvar, selected_plot_type ])
+	
 	const handlePLOT = () => {
-		
-
 		if(selected_plot_type == 'Bar'){
 			var input_data=[{type : 'bar', x:x, y:y} ];
 			setPlotIinputData(input_data);
@@ -147,13 +142,13 @@ const VisPheno = () => {
 			var new_layout = {
 				width: 800, 
 				height: 600,
-				yaxis: {
-					title: selectedYvar,
-					zeroline: false},
+				// yaxis: {
+				// 	title: selectedYvar,
+				// 	zeroline: false},
 				boxmode: 'group',
 				xaxis: {
 					title: selectedXvar},
-				title: 'Histogram'}
+				title: `Histogram`}//: ${selectedXvar}`}
 			setPlotLayout(new_layout); 
 
 
@@ -191,7 +186,6 @@ const VisPheno = () => {
 	return (
 
 		<div>
-		<h1></h1>
     	<Grid2  container spacing={1} columns={16} columnGap = {2}>
 			<label htmlFor="csvInput" style={{ display: "block" }}>
 				Enter CSV File
@@ -224,19 +218,23 @@ const VisPheno = () => {
 				sx={{ width: 300 }}
 				renderInput={(params) => <TextField {...params} label="choose y-variable" />}
 				onInputChange = {(e) => setSelectedYvar(e.target.innerHTML)}
+				// onChange={() => {handleYdata()}}
 			/>
 
-			<Button variant="outlined" onClick={handlePLOT}>Plot</Button>
+			<Button variant="outlined" onClick={() => {setIsToggled(true);handlePLOT();}}>Plot</Button>
 
 		</Grid2>
 		<h1></h1>
+
+		{!isToggled || 
 
 		<Plot 
 			sx = {{p:4}}
 			data={plot_input_data}
 			layout={ plot_layout }
 		></Plot>
-    
+		}
+		
   </div>
 	);
 };
