@@ -199,7 +199,6 @@ const VisPheno = () => {
 			<div>
 				<button onClick={handleParse}>Parse</button>
 			</div>
-
 			<Autocomplete
 				options={['Bar','Line', 'Histogram', 'Box plot', 'Scatter']}
 				sx={{ width: 300 }}
@@ -212,28 +211,26 @@ const VisPheno = () => {
 				renderInput={(params) => <TextField {...params} label="choose x-variable" />}
 				onInputChange = {(e) => setSelectedXvar(e.target.innerHTML)}
 			/>
-
+		{ selected_plot_type === 'Histogram' || 
 			<Autocomplete
 				options={col_names}
 				sx={{ width: 300 }}
 				renderInput={(params) => <TextField {...params} label="choose y-variable" />}
 				onInputChange = {(e) => setSelectedYvar(e.target.innerHTML)}
-				// onChange={() => {handleYdata()}}
 			/>
-
+		}
 			<Button variant="outlined" onClick={() => {setIsToggled(true);handlePLOT();}}>Plot</Button>
-
 		</Grid2>
-		<h1></h1>
+
 
 		{!isToggled || 
 
-		<Plot 
-			sx = {{p:4}}
-			data={plot_input_data}
-			layout={ plot_layout }
-		></Plot>
-		}
+			<Plot 
+				sx = {{p:4}}
+				data={plot_input_data}
+				layout={ plot_layout }
+			></Plot>
+			}
 		
   </div>
 	);
