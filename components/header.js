@@ -13,12 +13,12 @@ export default function Header() {
     Single Page Application for data visualization (dataVis)
     </Typography>
 
-    <Typography variant='p'>
+    <Typography  variant='p'>
     ataulhaleem@gmail.com
 
     </Typography>
 
-    <Typography variant='h6'>
+    {/* <Typography variant='h6'>
     Description
     </Typography>
 
@@ -26,7 +26,7 @@ export default function Header() {
        dataVis provides webbased interactive plots for your data. It is meant to abstract away any command line expertise required to process large files as well as plotting options.
       This app can be downloaded and run on you machine as well as used here. The application  provides basic plot types at the moment but is under active development. 
       The aim is to re-use the component in a bigger application.
-    </Typography>
+    </Typography> */}
     </>
     
   )

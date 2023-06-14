@@ -1,239 +1,100 @@
-import React, { useState, useCallback, useEffect } from "react";
-import Papa from "papaparse";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import React, { useState} from "react";
 import dynamic from 'next/dynamic'
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
-import Button from '@mui/material/Button';
-
-// Allowed extensions for input file
-const allowedExtensions = ["csv"];
-
-const VisPheno = () => {
-	
-	// This state will store the parsed data
-	const [col_names, setColNames] = useState([]);
-	const [data, setData] = useState([]);
-
-	// Toggle plot component
-	const [isToggled, setIsToggled] = useState(false);
-
-	// It state will contain the error when
-	// correct file extension is not used
-	const [error, setError] = useState("");
-	
-	// It will store the file uploaded by the user
-	const [file, setFile] = useState("");
-	const [selectedXvar, setSelectedXvar] = useState([]);
-	const [selectedYvar, setSelectedYvar] = useState();
-	const [selected_plot_type, setSelectedPlotType] = useState('');
-	const [plot_input_data, setPlotIinputData] = useState([]);
-	const [plot_layout, setPlotLayout] = useState({});	
-	const [x, setX] = useState([]);
-	const [y, setY] = useState([]);
-
-	// This function will be called when
-	// the file input changes
-	const handleFileChange = (e) => {
-		setError("");
-		
-		// Check if user has entered the file
-		if (e.target.files.length) {
-			const inputFile = e.target.files[0];
-			
-			// Check the file extensions, if it not
-			// included in the allowed extensions
-			// we show the error
-			const fileExtension = inputFile?.type.split("/")[1];
-			if (!allowedExtensions.includes(fileExtension)) {
-				setError("Please input a csv file");
-				return;
-			}
-
-			// If input type is correct set the state
-			setFile(inputFile);
-		}
-	};
-	const handleParse = () => {
-		
-		// If user clicks the parse button without
-		// a file we show a error
-		if (!file) return setError("Enter a valid file");
-
-		// Initialize a reader which allows user
-		// to read any file or blob.
-		const reader = new FileReader();
-		
-		// Event listener on reader when the file
-		// loads, we parse it and set the data.
-		reader.onload = async ({ target }) => {
-			const csv = Papa.parse(target.result, { header: true });
-			const parsedData = csv?.data;
-			// console.log(parsedData);
-			setData(parsedData);
-
-      	const columns = Object.keys(parsedData[0]);
-				setColNames(columns);
-			};
-		reader.readAsText(file);
-
-	};
-
-	const handleXdata = () => {
-		var x_data = [];
-		for(let i=0;i < data.length;i++){
-        	x_data.push(data[i][selectedXvar]);
-	    setX(x_data);
-		}
-	};
-	
-	const handleYdata = () => {
-		var y_data = [];
-		for(let i=0;i < data.length;i++){
-        	y_data.push(data[i][selectedYvar]);
-			};
-	    setY(y_data);
-	}
 
 
-	
 
-	useEffect(() => {
-		handleXdata();
-		handleYdata();
-		handlePLOT();
-	  },[x,y,selectedXvar, selectedYvar, selected_plot_type ])
-	
-	const handlePLOT = () => {
-		if(selected_plot_type == 'Bar'){
-			var input_data=[{type : 'bar', x:x, y:y} ];
-			setPlotIinputData(input_data);
-			var new_layout = {
-				width: 800, 
-				height: 600,
-				yaxis: {
-					title: selectedYvar,
-					zeroline: false},
-				boxmode: 'group',
-				xaxis: {
-					title: selectedXvar},
-				title: 'Bar plot'}
-			setPlotLayout(new_layout); 
+const isObjectEmpty = (objectName) => {
+    return Object.keys(objectName).length === 0
+  }
 
-		}else if(selected_plot_type == 'Line' ){
-			var input_data=[{type : 'line', x:x, y:y} ];
-			setPlotIinputData(input_data);
-			var new_layout = {
-				width: 800, 
-				height: 600,
-				yaxis: {
-					title: selectedYvar,
-					zeroline: false},
-				boxmode: 'group',
-				xaxis: {
-					title: selectedXvar},
-				title: 'Line plot'}
-			setPlotLayout(new_layout); 
+var primaryLaout = {
+    width :800,
+    height : 800,
+    // autosize: true,
+    hovermode: "closest",
+    editable: true,
+    xaxis: {
+        title: {text: 'x Axis'}
+    },
+    yaxis: {
+        title: {text: 'x Axis'}
+    }
+}
 
-		}else if(selected_plot_type == 'Histogram' ){
-			var input_data=[{type : 'histogram', x:x, y:y} ];
-			setPlotIinputData(input_data);
-			var new_layout = {
-				width: 800, 
-				height: 600,
-				// yaxis: {
-				// 	title: selectedYvar,
-				// 	zeroline: false},
-				boxmode: 'group',
-				xaxis: {
-					title: selectedXvar},
-				title: `Histogram`}//: ${selectedXvar}`}
-			setPlotLayout(new_layout); 
+const PlotlyPlots = (props) => {
 
+    var plotyType = props.plotSchema.ploty_type;
+    var inputData = props.plotSchema.inputData;
+    var selectedVars = props.plotSchema.variablesToPlot;
 
-		}else if(selected_plot_type == 'Box plot' ){
-			var input_data=[{type : 'box', x:x, name : selectedXvar},{type : 'box', x:y, name: selectedYvar} ];
-			setPlotIinputData(input_data);
-			var new_layout = {
-				width: 800, 
-				height: 600,
-				title: 'Box plot'}
-			setPlotLayout(new_layout); 
+    const [Xdata,setXdata] = useState([]);
+    const [Ydata,setYdata] = useState([]);
+    const [tracesData,setTracesData] = useState([]);
 
+    var x = selectedVars[0]; 
+    var y = selectedVars[1];
+    
+    var xdata = [];
+    var ydata = [];
 
-		}else if(selected_plot_type == 'Scatter' ){
-			var input_data=[{type : 'scatter', mode: 'markers',x:x, y:y} ];
-			setPlotIinputData(input_data);
-			var new_layout = {
-				width: 800, 
-				height: 600,
-				yaxis: {
-					title: selectedYvar,
-					zeroline: false},
-				boxmode: 'group',
-				xaxis: {
-					title: selectedXvar},
-				title: 'Scatter plot'}
-			setPlotLayout(new_layout); 
+    if(!isObjectEmpty(inputData)){
+        for(let i=0;i < inputData.length;i++){
+            var obj = inputData[i]
+            xdata.push(obj[x])
+            ydata.push(obj[y])
+        }
+    }
 
+    //////////////////////////// Now for plot types
 
-		};
-		
-	};
+    if(plotyType == 'bar'){
+        var plotData=[{type : 'bar', x:xdata, y:ydata} ];
+        var plotLayout = primaryLaout;
+        plotLayout['boxmode'] = 'group'
+        plotLayout.xaxis.title = x
+        plotLayout.yaxis.title = y
 
+    }else if(plotyType == 'line' ){
+        var plotData=[{type : 'line', x:xdata, y:ydata} ];
+        var plotLayout = primaryLaout;
+        plotLayout.xaxis.title = x
+        plotLayout.yaxis.title = y
+    }else if(plotyType == 'histogram' ){
+			var plotData=[{type : 'histogram', x:xdata} ];
+            var plotLayout = primaryLaout;
+            plotLayout.xaxis.title = x
+            plotLayout.yaxis.title = y
+    }else if(plotyType == 'scatter' ){
+			var plotData=[{type : 'scattergl', mode: 'markers',x:xdata, y:ydata} ];
+            var plotLayout = primaryLaout;
+            plotLayout.xaxis.title = x
+            plotLayout.yaxis.title = y
+    }else if(plotyType == 'boxplot' ){
+        var input_Obj = {};
+        selectedVars.map(key =>{
+            var Y =[];	
+            input_Obj[key] = {y:Y, type :'box', name:key}  
+            }
+        )
+        for(let i=0;i < inputData.length;i++){
+            var obj = inputData[i]
+            selectedVars.map(key =>{
+                input_Obj[key].y.push(obj[key]) 
+
+            })
+        }
+		var plotData = Object.values(input_Obj)   
+    }
 
 	return (
-
-		<div>
-    	<Grid2  container spacing={1} columns={16} columnGap = {2}>
-			<label htmlFor="csvInput" style={{ display: "block" }}>
-				Enter CSV File
-			</label>
-			<input
-				onChange={handleFileChange}
-				id="csvInput"
-				name="file"
-				type="File"
-			/>
-			<div>
-				<button onClick={handleParse}>Parse</button>
-			</div>
-			<Autocomplete
-				options={['Bar','Line', 'Histogram', 'Box plot', 'Scatter']}
-				sx={{ width: 300 }}
-				renderInput={(params) => <TextField {...params} label="choose plot type" />}
-				onInputChange = {(e) => setSelectedPlotType(e.target.innerHTML)}
-			/>
-			<Autocomplete
-				options={col_names}
-				sx={{ width: 300 }}
-				renderInput={(params) => <TextField {...params} label="choose x-variable" />}
-				onInputChange = {(e) => setSelectedXvar(e.target.innerHTML)}
-			/>
-		{ selected_plot_type === 'Histogram' || 
-			<Autocomplete
-				options={col_names}
-				sx={{ width: 300 }}
-				renderInput={(params) => <TextField {...params} label="choose y-variable" />}
-				onInputChange = {(e) => setSelectedYvar(e.target.innerHTML)}
-			/>
-		}
-			<Button variant="outlined" onClick={() => {setIsToggled(true);handlePLOT();}}>Plot</Button>
-		</Grid2>
-
-
-		{!isToggled || 
-
-			<Plot 
-				sx = {{p:4}}
-				data={plot_input_data}
-				layout={ plot_layout }
-			></Plot>
-			}
-		
-  </div>
+        // plotNow || 
+            <Plot 
+                sx = {{p:4,m:1}}
+                data={plotData}
+                layout={ plotLayout }
+            />
 	);
 };
 
-export default VisPheno;
+export default PlotlyPlots;
