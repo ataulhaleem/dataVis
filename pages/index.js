@@ -4,7 +4,7 @@ import Header from '../components/header'
 import PlotlyPlots from '../components/visPheno'
 import React, { useState, useCallback, useEffect } from "react";
 import Papa from "papaparse";
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
@@ -147,7 +147,7 @@ export default function Home() {
 			</div>
 
 
-      <Grid2 className="top-grid" container spacing={1} columns={16} columnGap = {2}>
+      <Grid className="top-grid" container spacing={1} columns={16} columnGap = {2}>
         <Autocomplete
           options={['bar','line', 'histogram', 'boxplot', 'scatter']}
           sx={{ width: 300 }}
@@ -171,7 +171,7 @@ export default function Home() {
         />
       }
         {/* <Button variant="outlined" onClick={handlePLOT}>Plot</Button> */}
-		</Grid2>
+		</Grid>
 
 
 
