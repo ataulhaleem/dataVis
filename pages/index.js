@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Header from '../components/header'
-import PlotlyPlots from '../components/visPheno'
+import PlotlyPlots from '../components/PlotlyPlots'
 import React, { useState, useCallback, useEffect } from "react";
 import Papa from "papaparse";
 import Grid from '@mui/material/Grid';
@@ -155,7 +155,7 @@ export default function Home() {
           onInputChange = {(e) => setSelectedXvar(e.target.innerHTML)}
         />
         }
-      { selected_plot_type === 'histogram'|| 
+      { selected_plot_type === 'histogram' | selected_plot_type === 'line' || 
         <Autocomplete
           options={col_names}
           sx={{ width: 300 }}
