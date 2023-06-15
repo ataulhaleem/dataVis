@@ -1,0 +1,8 @@
+{
+  "../components/visPheno.js -> react-plotly.js": {
+    "id": "../components/visPheno.js -> react-plotly.js",
+    "files": [
+      "static/chunks/node_modules_react-plotly_js_react-plotly_js.js"
+    ]
+  }
+}
