@@ -91,6 +91,8 @@ export default function Home() {
 
 	};
 
+  // console.log(parsedData)
+
   useEffect(() =>{
     // setState({})
     if(selected_plot_type == 'boxplot'){
@@ -118,7 +120,6 @@ export default function Home() {
       plotSchema.variablesToPlot = [selectedXvar, selectedYvar]
     }
     setPlotSchema(plotSchema)
-    setIsToggled(true) // this is for plot area
     var newState = {}
     setState(newState)
 
@@ -132,22 +133,14 @@ export default function Home() {
       </Head>
       <Header/>
 
+      <Grid className="top-grid" container spacing={1} columns={3} columnGap = {2}>
+        <Button variant="outlined" >
+          <input type="File" onChange={handleFileChange} id="csvInput" name="file" />
+        </Button>
+        <Button variant="outlined" onClick={handleParse}>
+            Parse
+        </Button>
 
-			<label htmlFor="csvInput" style={{ display: "block" }}>
-				Enter CSV File
-			</label>
-			<input
-				onChange={handleFileChange}
-				id="csvInput"
-				name="file"
-				type="File"
-			/>
-			<div>
-				<button onClick={handleParse}>Parse</button>
-			</div>
-
-
-      <Grid className="top-grid" container spacing={1} columns={16} columnGap = {2}>
         <Autocomplete
           options={['bar','line', 'histogram', 'boxplot', 'scatter']}
           sx={{ width: 300 }}
@@ -170,7 +163,7 @@ export default function Home() {
           onInputChange = {(e) => setSelectedYvar(e.target.innerHTML)}
         />
       }
-        {/* <Button variant="outlined" onClick={handlePLOT}>Plot</Button> */}
+        <Button variant="outlined" onClick={() => {setIsToggled(true)}}>Plot</Button>
 		</Grid>
 
 
