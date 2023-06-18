@@ -15,6 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { linReg } from '../components/utils';
 
 const allowedExtensions = ["csv"];
 
@@ -95,13 +96,12 @@ export default function Home() {
 
   useEffect(() =>{
     // setState({})
-    if(selected_plot_type == 'boxplot'){
+    if(selected_plot_type == 'boxplot' || selected_plot_type == 'violin' || selected_plot_type == "raincloud"){
       setOpen(true)
     }
     // selected_plot_type == 'boxplot' ? setOpen(true) : console.log('if you select boxplot you will get a menu to select variable');
     handlePLOT();
   },[selected_plot_type, selectedXvar, selectedYvar])
-
 
   //use My wraper
   var handlePLOT = () =>{
@@ -112,9 +112,13 @@ export default function Home() {
     } 
     if(selected_plot_type === 'boxplot'){
       plotSchema.ploty_type = 'boxplot'
-
       plotSchema.variablesToPlot = Object.keys(state);
-
+    }else if(selected_plot_type === 'violin' ){
+      plotSchema.ploty_type = 'violin'
+      plotSchema.variablesToPlot = Object.keys(state);
+    }else if(selected_plot_type === 'raincloud'){
+      plotSchema.ploty_type = 'raincloud'
+      plotSchema.variablesToPlot = Object.keys(state);
     }else{
       plotSchema.ploty_type = selected_plot_type      
       plotSchema.variablesToPlot = [selectedXvar, selectedYvar]
@@ -124,7 +128,6 @@ export default function Home() {
     setState(newState)
 
   }
-
   return (
     <div className={styles.container}>
       <Head className="header">
@@ -142,7 +145,7 @@ export default function Home() {
         </Button>
 
         <Autocomplete
-          options={['bar','line', 'histogram', 'boxplot', 'scatter']}
+          options={['bar','line', 'histogram', 'boxplot', 'scatter', 'linReg', 'violin', 'raincloud']}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="choose plot type" />}
           onInputChange = {(e) => setSelectedPlotType(e.target.innerHTML)}
