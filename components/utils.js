@@ -50,6 +50,65 @@ export function  linReg(x,y){
 }
 
 
-export function heatMap(array){
+export function ManhattanHeatMap(xArray,yArray, inputData){
+    var z = []
+    // var dist = []
 
+    // for(let i=0; i< xArray.length;i++){
+    //     var pointDists = [];
+    //     for(let j=0; i< yArray.length;j++){
+    //         var itemX = xArray[i]
+    //         var itemY = yArray[i]
+    //         inputData.map(obj => {
+    //             var X1 = parseFloat(obj[itemX]).toFixed(2);
+    //             var X2 = parseFloat(obj[itemY]).toFixed(2);
+    //             pointDists.push(Math.abs(X2 - X1))
+    //         })  
+        
+    //     }
+    //     z.push(pointDists)
+    //     console.log(z)
+
+    // }
+
+    xArray.map(itemX => {
+        var pointDists = [];
+        yArray.map(itemY => {
+            inputData.map(obj => {
+                var X1 = parseFloat(obj[itemX]).toFixed(2);
+                var X2 = parseFloat(obj[itemY]).toFixed(2);
+                // console.log(Math.abs(X1-X2).toFixed(2) + pointDists)
+                // pointDists += (Math.abs(X2 - X1));
+                pointDists.push(Math.abs(X2 - X1))
+            })  
+            var sum = pointDists.reduce((a, b) => a + b, 0);
+            dist.push(sum)
+            console.log(pointDists)
+        })
+        z.push(dist)
+        dist = []
+        console.log(z)
+    })
+    return z
 }
+
+
+
+  
+// export function correlationHeatMap(xArray,yArray, inputData){
+//     var z = []
+//     xArray.map(itemX => {
+//         var dist = []
+//         yArray.map(itemY => {
+//             var xvals = []
+//             var yvals = []
+//             inputData.map(obj => {
+//                 xvals.push(obj[itemX])
+//                 yvals.push(obj[itemY])
+//             })  
+//             dist.push()
+//         })
+//         z.push(dist)
+//     })
+//     return z
+// }

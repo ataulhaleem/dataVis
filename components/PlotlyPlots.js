@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import dynamic from 'next/dynamic'
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
-import { linReg } from "./utils";
+import { ManhattanHeatMap, linReg } from "./utils";
 import { ForkLeft } from "@mui/icons-material";
 
 
@@ -195,8 +195,29 @@ const PlotlyPlots = (props) => {
         plotLayout.xaxis.title = x
         plotLayout.yaxis.title = y
         plotLayout.showlegend = false
+    } else if(plotyType == 'heatMap'){
+
+        var x = selectedVars;
+        var y = selectedVars;
+        console.log(x)
+        var z = ManhattanHeatMap(x,y, inputData)
+        // var colorscaleValue = [
+        //     [0, '#3D9970'],
+        //     [1, '#001f3f']
+        //   ];
+        var plotData = [
+            {x: x,
+                y: y,
+                z: z,
+                type: 'heatmap',
+                // colorscale: colorscaleValue,
+                showscale: false}
+        ]
+
+
+
     }else{
-        console.log('error')
+        console.log('Please choose a plot type')
     }
 
 	return (

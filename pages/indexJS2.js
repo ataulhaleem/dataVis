@@ -49,23 +49,37 @@ export default function Home() {
 
   const handleFileChange = (e) => {
 		setError("");
-		
-		// Check if user has entered the file
-		if (e.target.files.length) {
-			const inputFile = e.target.files[0];
-			
-			// Check the file extensions, if it not
-			// included in the allowed extensions
-			// we show the error
-			const fileExtension = inputFile?.type.split("/")[1];
-			if (!allowedExtensions.includes(fileExtension)) {
-				setError("Please input a csv file");
-				return;
-			}
+    
+    const url = document.getElementById("csvFiles").value
+          fetch(url)
+        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(blob => {
+          console.log(blob);
+          // Here's where you get access to the blob
+          // And you can use it for whatever you want
+          // Like calling ref().put(blob)
 
-			// If input type is correct set the state
-			setFile(inputFile);
-		}
+          // Here, I use it to make an image appear on the page
+          var file1 = blob;
+          // if (e.target.files.length) {
+            
+            // const inputFile = e.target.files[0];
+            const inputFile = file1;
+            // Check the file extensions, if it not
+            // included in the allowed extensions
+            // we show the error
+            // const fileExtension = inputFile?.type.split("/")[1];
+            // if (!allowedExtensions.includes(fileExtension)) {
+            //   setError("Please input a csv file");
+            //   return;
+            // }
+      
+            // If input type is correct set the state
+            setFile(blob);
+          // }
+      });
+		// Check if user has entered the file
+	
 	};
 	const handleParse = () => {
 		
@@ -142,8 +156,16 @@ export default function Home() {
 
       <Grid className="top-grid" container spacing={1} columns={3} columnGap = {2}>
         <Button variant="outlined" >
-          <input type="File" onChange={handleFileChange} id="csvInput" name="file" />
-          
+          {/* <input type="File" onChange={handleFileChange} id="csvInput" name="file" /> */}
+          <select name="csvs" id="csvFiles" onChange={handleFileChange}>
+            <option value="">--Please choose an option--</option>
+            <option value="https://raw.githubusercontent.com/xiaoranzhou/cpb-binder/master/tutorial/jupyter/case_01_0.025cm_lateral_radius.xml_11_1_0.8_high_10.csv">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="hamster">Hamster</option>
+            <option value="parrot">Parrot</option>
+            <option value="spider">Spider</option>
+            <option value="goldfish">Goldfish</option>
+        </select>
         </Button>
         <Button variant="outlined" onClick={handleParse}>
             Parse
