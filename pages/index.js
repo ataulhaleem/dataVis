@@ -69,32 +69,20 @@ export default function Home() {
 		}
 	};
 	const handleParse = () => {
-		
-		// If user clicks the parse button without
-		// a file we show a error
 		if (!file) return setError("Enter a valid file");
-
-		// Initialize a reader which allows user
-		// to read any file or blob.
 		const reader = new FileReader();
-		
-		// Event listener on reader when the file
-		// loads, we parse it and set the data.
 		reader.onload = async ({ target }) => {
 			const csv = Papa.parse(target.result, { header: true });
 			const parsedData = csv?.data;
-			// console.log(parsedData);
 			setData(parsedData);
-
       	const columns = Object.keys(parsedData[0]);
 				setColNames(columns);
 			};
 		reader.readAsText(file);
-
 	};
 	const handleParse2 = () => {
     // setUrl('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/Agri_traits.csv')
-    console.log(url)
+    // console.log(url)
     fetch(url)
       .then(res => res.blob()) // Gets the response and returns it as a blob
       .then(blob => {
@@ -104,11 +92,9 @@ export default function Home() {
 	};
 
   useEffect(() =>{
-    // setState({})
     if(selected_plot_type == 'boxplot' || selected_plot_type == 'violin' || selected_plot_type == "raincloud" || selected_plot_type == "heatMap"){
       setOpen(true)
     }
-    // selected_plot_type == 'boxplot' ? setOpen(true) : console.log('if you select boxplot you will get a menu to select variable');
     handlePLOT();
   },[selected_plot_type, selectedXvar, selectedYvar])
 
@@ -167,12 +153,9 @@ export default function Home() {
           </Button>
       </Grid>
 
-
-
-
       <Grid className="top-grid" container columns={3} columnGap = {2}>
         <Autocomplete
-          options={['bar','line', 'histogram', 'boxplot', 'scatter', 'linReg', 'heatMap','violin', 'raincloud']}
+          options={['bar','line', 'histogram', 'boxplot', 'scatter','violin', 'raincloud']}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="choose plot type" />}
           onInputChange = {(e) => setSelectedPlotType(e.target.innerHTML)}
@@ -195,9 +178,6 @@ export default function Home() {
       }
         <Button variant="outlined" onClick={() => {setIsToggled(true)}}>Plot</Button>
 		</Grid>
-
-
-
 
 
     {!isToggled || 
