@@ -142,7 +142,7 @@ export default function Home() {
 
   }
 
-  var dataSets = ['MODEM', 'UNTWIST']
+  var dataSets = ['MODEM']
   return (
     <div className={styles.container}>
       <Head className="header">
