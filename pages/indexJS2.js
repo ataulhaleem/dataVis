@@ -154,18 +154,21 @@ export default function Home() {
       </Head>
       <Header/>
 
-      <Grid className="top-grid" container spacing={1} columns={3} columnGap = {2}>
-        <Button variant="outlined" >
-          {/* <input type="File" onChange={handleFileChange} id="csvInput" name="file" /> */}
-          <select name="csvs" id="csvFiles" onChange={handleFileChange}>
+      <select name="csvs" id="csvFiles" onChange={handleFileChange}>
             <option value="">--Please choose an option--</option>
-            <option value="https://raw.githubusercontent.com/xiaoranzhou/cpb-binder/master/tutorial/jupyter/case_01_0.025cm_lateral_radius.xml_11_1_0.8_high_10.csv">Dog</option>
+            <option value="https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/Agri_traits.csv">MODEM</option>
             <option value="cat">Cat</option>
             <option value="hamster">Hamster</option>
             <option value="parrot">Parrot</option>
             <option value="spider">Spider</option>
             <option value="goldfish">Goldfish</option>
         </select>
+
+
+
+      <Grid className="top-grid" container spacing={1} columns={3} columnGap = {2}>
+        <Button variant="outlined" >
+          {/* <input type="File" onChange={handleFileChange} id="csvInput" name="file" /> */}
         </Button>
         <Button variant="outlined" onClick={handleParse}>
             Parse

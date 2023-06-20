@@ -33,6 +33,7 @@ export default function Home() {
   const [isToggled, setIsToggled] = useState(false);
   const [plotSchema, setPlotSchema] = useState({})
   const [state, setState] = useState({});
+  const [url, setUrl] = useState('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/modemAgriTraits.csv');
 
 	const handleChange = (event) => {
 		setState({
@@ -91,8 +92,16 @@ export default function Home() {
 		reader.readAsText(file);
 
 	};
-
-  // console.log(parsedData)
+	const handleParse2 = () => {
+    // setUrl('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/Agri_traits.csv')
+    console.log(url)
+    fetch(url)
+      .then(res => res.blob()) // Gets the response and returns it as a blob
+      .then(blob => {
+      setFile(blob);
+        }
+      )
+	};
 
   useEffect(() =>{
     // setState({})
@@ -132,6 +141,8 @@ export default function Home() {
     setState(newState)
 
   }
+
+  var dataSets = ['MODEM', 'UNTWIST']
   return (
     <div className={styles.container}>
       <Head className="header">
@@ -140,15 +151,26 @@ export default function Home() {
       </Head>
       <Header/>
 
-      <Grid className="top-grid" container spacing={1} columns={3} columnGap = {2}>
-        <Button variant="outlined" >
-          <input type="File" onChange={handleFileChange} id="csvInput" name="file" />
-          
-        </Button>
-        <Button variant="outlined" onClick={handleParse}>
-            Parse
-        </Button>
+      <Grid container columns={3} columnGap = {2}>
+      <Autocomplete
+          options={dataSets}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Select Project Data" />}
+          onInputChange = {(e) => handleParse2(e.target.innerHTML)}
+        />
+          <Button variant="outlined" sx={{ width: 600 }}>
+          Select own data: 
+            <input type="File" onChange={handleFileChange} id="csvInput" name="file" />
+          </Button>
+          <Button variant="outlined" onClick={handleParse} >
+              Parse
+          </Button>
+      </Grid>
 
+
+
+
+      <Grid className="top-grid" container columns={3} columnGap = {2}>
         <Autocomplete
           options={['bar','line', 'histogram', 'boxplot', 'scatter', 'linReg', 'heatMap','violin', 'raincloud']}
           sx={{ width: 300 }}
