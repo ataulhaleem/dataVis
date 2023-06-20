@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Header from '../components/header'
-import PlotlyPlots from '../components/PlotlyPlots'
+import PlotlyPlots from '../components/PlotlyPlots2'
 import React, { useState, useCallback, useEffect } from "react";
 import Papa from "papaparse";
 import Grid from '@mui/material/Grid';
@@ -17,7 +17,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { linReg } from '../components/utils';
 
-const allowedExtensions = ["csv"];
+const allowedExtensions = ["csv", "tsv", "txt", "qassoc", "assoc"];
 
 export default function Home() {
   const [file, setFile] = useState("");
@@ -26,8 +26,8 @@ export default function Home() {
   
   const [selected_plot_type, setSelectedPlotType] = useState('');
   const [col_names, setColNames] = useState([]);
-  const [selectedXvar, setSelectedXvar] = useState([]);
-	const [selectedYvar, setSelectedYvar] = useState();
+  const [selectedXvar, setSelectedXvar] = useState('');
+	const [selectedYvar, setSelectedYvar] = useState('');
   
   const [open, setOpen] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
@@ -92,14 +92,11 @@ export default function Home() {
 	};
 
   useEffect(() =>{
-
     if(selected_plot_type == 'boxplot' || selected_plot_type == 'violin' || selected_plot_type == "raincloud" || selected_plot_type == "heatMap"){
       setOpen(true)
     }
-
-
     handlePLOT();
-  },[selected_plot_type, selectedXvar, selectedYvar,plotSchema])
+  },[selected_plot_type, selectedXvar, selectedYvar])
 
   //use My wraper
   var handlePLOT = () =>{
@@ -111,26 +108,36 @@ export default function Home() {
     if(selected_plot_type === 'boxplot'){
       plotSchema.ploty_type = 'boxplot'
       plotSchema.variablesToPlot = Object.keys(state);
+
     }else if(selected_plot_type === 'violin' ){
       plotSchema.ploty_type = 'violin'
       plotSchema.variablesToPlot = Object.keys(state);
+
     }else if(selected_plot_type === 'raincloud'){
       plotSchema.ploty_type = 'raincloud'
       plotSchema.variablesToPlot = Object.keys(state);
+
     }else if(selected_plot_type === 'heatMap'){
       plotSchema.ploty_type = 'heatMap'
       plotSchema.variablesToPlot = Object.keys(state);
+
     }else{
       plotSchema.ploty_type = selected_plot_type      
       plotSchema.variablesToPlot = [selectedXvar, selectedYvar]
     }
+
     setPlotSchema(plotSchema)
+
+
     var newState = {}
     setState(newState)
 
   }
 
+  console.log("PlotSchema" , plotSchema)
+
   var dataSets = ['MODEM']
+
   return (
     <div className={styles.container}>
       <Head className="header">
@@ -154,6 +161,8 @@ export default function Home() {
               Parse
           </Button>
       </Grid>
+
+
 
       <Grid className="top-grid" container columns={3} columnGap = {2}>
         <Autocomplete

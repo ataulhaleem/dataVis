@@ -1,8 +1,7 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import dynamic from 'next/dynamic'
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, })
 import { ManhattanHeatMap, linReg } from "./utils";
-import { ForkLeft } from "@mui/icons-material";
 
 
 
@@ -28,17 +27,27 @@ var primaryLaout = {
 }
 
 const PlotlyPlots = (props) => {
-
     var plotyType = props.plotSchema.ploty_type;
     var inputData = props.plotSchema.inputData;
     var selectedVars = props.plotSchema.variablesToPlot;
 
-    var x = selectedVars[0]; 
-    var y = selectedVars[1];
-    
+    // var plotyType1 = props.plotSchema.ploty_type;
+    // var inputData1 = props.plotSchema.inputData;
+    // var selectedVars1 = props.plotSchema.variablesToPlot;
+    // const[plotyType, setPlotType] = useState('');
+    // const[inputData, setInputData] = useState({});
+    // const[selectedVars, setSelectedVars] = useState([])
+    // useEffect(() => {
+    //     setPlotType(plotyType1)
+    //     setInputData(inputData1)
+    //     setSelectedVars(selectedVars1)
+    // })
+
     var xdata = [];
     var ydata = [];
 
+    var x = selectedVars[0]; 
+    var y = selectedVars[1];   
     if(!isObjectEmpty(inputData)){
         for(let i=0;i < inputData.length;i++){
             var obj = inputData[i]
@@ -46,6 +55,9 @@ const PlotlyPlots = (props) => {
             ydata.push(obj[y])
         }
     }
+
+    console.log(x, xdata)
+    console.log(y, ydata)
 
 // console.log(ydata);
     //////////////////////////// Now for plot types
@@ -60,14 +72,13 @@ const PlotlyPlots = (props) => {
     }else if(plotyType == 'line' ){
         var plotData=[{type : 'line', y:xdata} ];
         var plotLayout = primaryLaout;
-        plotLayout.xaxis.title = x
-        plotLayout.yaxis.title = y
+        plotLayout.xaxis.title = y
 
     }else if(plotyType == 'histogram' ){
 			var plotData=[{type : 'histogram', x:xdata} ];
             var plotLayout = primaryLaout;
             plotLayout.xaxis.title = x
-            plotLayout.yaxis.title = y
+            // plotLayout.yaxis.title = y
 
     }else if(plotyType == 'scatter' ){
 			var plotData=[{type : 'scattergl', mode: 'markers',x:xdata, y:ydata} ];
