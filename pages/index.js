@@ -33,7 +33,7 @@ export default function Home() {
   const [isToggled, setIsToggled] = useState(false);
   const [plotSchema, setPlotSchema] = useState({})
   const [state, setState] = useState({});
-  const [url, setUrl] = useState('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/modemAgriTraits.csv');
+  const [url, setUrl] = useState('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/modemPhenoData.csv');
 
 	const handleChange = (event) => {
 		setState({
