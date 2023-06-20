@@ -18,6 +18,18 @@ export default function Header() {
 
     </Typography>
 
+    <Typography  variant='h6'>
+    Usage:
+      <ol>
+      <li>Choose project data OR select your own data</li>
+      <li>Press PARSE</li>
+      <li>Choose plotting options</li>
+      <li> Press PLOT</li>
+    </ol> 
+    </Typography>
+
+
+
     {/* <Typography variant='h6'>
     Description
     </Typography>
