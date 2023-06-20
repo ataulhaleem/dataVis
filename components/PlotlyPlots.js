@@ -195,11 +195,11 @@ const PlotlyPlots = (props) => {
         plotLayout.xaxis.title = x
         plotLayout.yaxis.title = y
         plotLayout.showlegend = false
+
     } else if(plotyType == 'heatMap'){
 
         var x = selectedVars;
         var y = selectedVars;
-        console.log(x)
         var z = ManhattanHeatMap(x,y, inputData)
         // var colorscaleValue = [
         //     [0, '#3D9970'],

@@ -92,11 +92,14 @@ export default function Home() {
 	};
 
   useEffect(() =>{
+
     if(selected_plot_type == 'boxplot' || selected_plot_type == 'violin' || selected_plot_type == "raincloud" || selected_plot_type == "heatMap"){
       setOpen(true)
     }
+
+
     handlePLOT();
-  },[selected_plot_type, selectedXvar, selectedYvar])
+  },[selected_plot_type, selectedXvar, selectedYvar,plotSchema])
 
   //use My wraper
   var handlePLOT = () =>{
@@ -117,7 +120,6 @@ export default function Home() {
     }else if(selected_plot_type === 'heatMap'){
       plotSchema.ploty_type = 'heatMap'
       plotSchema.variablesToPlot = Object.keys(state);
-
     }else{
       plotSchema.ploty_type = selected_plot_type      
       plotSchema.variablesToPlot = [selectedXvar, selectedYvar]
@@ -155,7 +157,7 @@ export default function Home() {
 
       <Grid className="top-grid" container columns={3} columnGap = {2}>
         <Autocomplete
-          options={['bar','line', 'histogram', 'boxplot', 'scatter','violin', 'raincloud']}
+          options={['bar','line', 'histogram', 'boxplot', 'scatter', 'linReg','violin', 'raincloud']}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="choose plot type" />}
           onInputChange = {(e) => setSelectedPlotType(e.target.innerHTML)}
@@ -178,6 +180,7 @@ export default function Home() {
       }
         <Button variant="outlined" onClick={() => {setIsToggled(true)}}>Plot</Button>
 		</Grid>
+
 
 
     {!isToggled || 

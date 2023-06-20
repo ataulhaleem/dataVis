@@ -1,5 +1,6 @@
 export function  linReg(x,y){
     // console.log(xArray.length,yArray.length)
+
     var xArray = []
     var yArray = []
     var x_,y_;
@@ -43,54 +44,54 @@ export function  linReg(x,y){
     // var yMin = Math.min(...yValues);
     // var yMax = Math.max(...yValues);
     r2 = Math.pow((count*xySum - xSum*ySum)/Math.sqrt((count*xxSum-xSum*xSum)*(count*yySum-ySum*ySum)),2);
-    console.log("rsquared is : ",r2);
+    // console.log("rsquared is : ",r2);
 
-    return {x:xValues, y:yValues, mode:"line" , text: `R^2:  ${r2}`, textposition: 'top'} //{x: [x2Min,x2Max],y: [yMin, yMax],  mode:'line'}
+    return {x:xValues, y:yValues, mode:"line" , text: `R^2:  ${r2}`, textposition: 'left'} //{x: [x2Min,x2Max],y: [yMin, yMax],  mode:'line'}
 
 }
 
 
-export function ManhattanHeatMap(xArray,yArray, inputData){
-    var z = []
-    // var dist = []
+// export function ManhattanHeatMap(xArray,yArray, inputData){
+//     var z = []
+//     // var dist = []
 
-    // for(let i=0; i< xArray.length;i++){
-    //     var pointDists = [];
-    //     for(let j=0; i< yArray.length;j++){
-    //         var itemX = xArray[i]
-    //         var itemY = yArray[i]
-    //         inputData.map(obj => {
-    //             var X1 = parseFloat(obj[itemX]).toFixed(2);
-    //             var X2 = parseFloat(obj[itemY]).toFixed(2);
-    //             pointDists.push(Math.abs(X2 - X1))
-    //         })  
+//     // for(let i=0; i< xArray.length;i++){
+//     //     var pointDists = [];
+//     //     for(let j=0; i< yArray.length;j++){
+//     //         var itemX = xArray[i]
+//     //         var itemY = yArray[i]
+//     //         inputData.map(obj => {
+//     //             var X1 = parseFloat(obj[itemX]).toFixed(2);
+//     //             var X2 = parseFloat(obj[itemY]).toFixed(2);
+//     //             pointDists.push(Math.abs(X2 - X1))
+//     //         })  
         
-    //     }
-    //     z.push(pointDists)
-    //     console.log(z)
+//     //     }
+//     //     z.push(pointDists)
+//     //     console.log(z)
 
-    // }
+//     // }
 
-    xArray.map(itemX => {
-        var pointDists = [];
-        yArray.map(itemY => {
-            inputData.map(obj => {
-                var X1 = parseFloat(obj[itemX]).toFixed(2);
-                var X2 = parseFloat(obj[itemY]).toFixed(2);
-                // console.log(Math.abs(X1-X2).toFixed(2) + pointDists)
-                // pointDists += (Math.abs(X2 - X1));
-                pointDists.push(Math.abs(X2 - X1))
-            })  
-            var sum = pointDists.reduce((a, b) => a + b, 0);
-            dist.push(sum)
-            console.log(pointDists)
-        })
-        z.push(dist)
-        dist = []
-        console.log(z)
-    })
-    return z
-}
+//     xArray.map(itemX => {
+//         var pointDists = [];
+//         yArray.map(itemY => {
+//             inputData.map(obj => {
+//                 var X1 = parseFloat(obj[itemX]).toFixed(2);
+//                 var X2 = parseFloat(obj[itemY]).toFixed(2);
+//                 // console.log(Math.abs(X1-X2).toFixed(2) + pointDists)
+//                 // pointDists += (Math.abs(X2 - X1));
+//                 pointDists.push(Math.abs(X2 - X1))
+//             })  
+//             var sum = pointDists.reduce((a, b) => a + b, 0);
+//             dist.push(sum)
+//             console.log(pointDists)
+//         })
+//         z.push(dist)
+//         dist = []
+//         console.log(z)
+//     })
+//     return z
+// }
 
 
 
