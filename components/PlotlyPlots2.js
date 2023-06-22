@@ -34,20 +34,6 @@ const PlotlyPlots = (props) => {
     const [plotData, setPlotData] = useState([]);
     const [plotLayout, setPlotLayout] = useState({});
 
-
-
-    // var plotyType1 = props.plotSchema.ploty_type;
-    // var inputData1 = props.plotSchema.inputData;
-    // var selectedVars1 = props.plotSchema.variablesToPlot;
-    // const[plotyType, setPlotType] = useState('');
-    // const[inputData, setInputData] = useState({});
-    // const[selectedVars, setSelectedVars] = useState([])
-    // useEffect(() => {
-    //     setPlotType(plotyType1)
-    //     setInputData(inputData1)
-    //     setSelectedVars(selectedVars1)
-    // })
-
     useEffect(()=>{
         handlePlotData(selectedVars,plotyType,inputData)
     }, [plotyType,selectedVars ])
@@ -91,23 +77,13 @@ const PlotlyPlots = (props) => {
             console.log('modify it for many variables')
     
         }else if(plotyType == 'histogram' ){
-            // var xdata = [];   
-            // var x = selectedVars[0]; 
-            // if(!isObjectEmpty(inputData)){
-            //     for(let i=0;i < inputData.length;i++){
-            //         var obj = inputData[i]
-            //         xdata.push(parseInt(obj[x]))
-            //     }
-            // }   
-            // console.log(xdata)    
             var plotData=[{type : 'histogram', x:xdata} ];
             var plotLayout = primaryLaout;
             plotLayout['xaxis'] = {}
             plotLayout.xaxis['title'] = x
+            plotLayout['yaxis'] = {}
+            plotLayout.yaxis['title'] = ''
 
-            // plotLayout.xaxis.title = x
-            // plotLayout.yaxis.title = y
-    
         }else if(plotyType == 'scatter' ){
                 var plotData=[{type : 'scattergl', mode: 'markers',x:xdata, y:ydata} ];
                 var plotLayout = primaryLaout;
@@ -192,8 +168,6 @@ const PlotlyPlots = (props) => {
                             yaxis: y_axis, 
                             type: 'violin', 
                             side : "positive",  
-                            // fillcolor : 'lightgreen',
-                            // showlegend :false,
                             line: { width: 0.75}, //color : 'green',
                         },
                         { 
@@ -244,10 +218,6 @@ const PlotlyPlots = (props) => {
             var x = selectedVars;
             var y = selectedVars;
             var z = ManhattanHeatMap(x,y, inputData)
-            // var colorscaleValue = [
-            //     [0, '#3D9970'],
-            //     [1, '#001f3f']
-            //   ];
             var plotData = [
                 {x: x,
                     y: y,

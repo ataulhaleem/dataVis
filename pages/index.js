@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Header from '../components/header'
 import PlotlyPlots from '../components/PlotlyPlots2'
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Papa from "papaparse";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -17,9 +17,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { linReg } from '../components/utils';
 
-const allowedExtensions = ["csv", "tsv"];
-
 export default function Home() {
+  const inputFile = useRef(null)
+
   const [file, setFile] = useState("");
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
@@ -36,9 +36,9 @@ export default function Home() {
   const [url, setUrl] = useState('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/modemPhenoData.csv');
 
 
-  const [xlable, setXlable] = useState('')
-  const [ylable, setYlable] = useState('')
-  const [plotTitle, setPlotTitle] = useState('')
+  // const [xlable, setXlable] = useState('')
+  // const [ylable, setYlable] = useState('')
+  // const [plotTitle, setPlotTitle] = useState('')
 
   
 	const handleChange = (event) => {
@@ -54,35 +54,33 @@ export default function Home() {
 
 	};
 
-  const handleFileChange = (e) => {
-		setError("");
-		
-		// Check if user has entered the file
-		if (e.target.files.length) {
-			const inputFile = e.target.files[0];
-			
-			// Check the file extensions, if it not
-			// included in the allowed extensions
-			// we show the error
-			// const fileExtension = inputFile?.type.split("/")[1];
-			const fileExtension = inputFile.name.split(".")[1];
+  const handleFileInputChange = () => {
+    const file = inputFile.current.files[0];
+    const reader = new FileReader();
 
-      console.log(fileExtension)
-			if (!allowedExtensions.includes(fileExtension)) {
-				setError("Please input a csv file");
-				return;
-			}
+    reader.onload = (event) => {
+      const blob = new Blob([event.target.result], { type: file.type });
+      setFile(blob);
+    };
 
-			// If input type is correct set the state
-			setFile(inputFile);
-		}
-	};
+    if (file) {
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const handleButtonClick = () => {
+    inputFile.current.click();
+  };
+
+
 	const handleParse = () => {
-		if (!file) return setError("Enter a valid file");
+
+		// if (!file) return setError("Enter a valid file");
 		const reader = new FileReader();
 		reader.onload = async ({ target }) => {
 			const csv = Papa.parse(target.result, { header: true });
 			const parsedData = csv?.data;
+      console.log(parsedData)
 			setData(parsedData);
       	const columns = Object.keys(parsedData[0]);
 				setColNames(columns);
@@ -162,10 +160,15 @@ export default function Home() {
           renderInput={(params) => <TextField {...params} label="Select Project Data" />}
           onInputChange = {(e) => handleParse2(e.target.innerHTML)}
         />
-          <Button variant="outlined" sx={{ width: 600 }}>
-          Select own data: 
-            <input type="File" onChange={handleFileChange} id="csvInput" name="file" />
+
+
+          <Button onClick={handleButtonClick} variant="outlined" sx={{ width: 600 }}>
+          Select own data 
+          <input type="file" ref = {inputFile} id="file" style = { {display : 'none'}} onChange={handleFileInputChange}/>
+
+            {/* <input type="file" onChange={handleFileChange} ref = {inputFile} id="csvInput" name="file" style = { {display : 'none'}}/> */}
           </Button>
+
           <Button variant="outlined" onClick={handleParse} >
               Parse
           </Button>
@@ -180,7 +183,6 @@ export default function Home() {
           renderInput={(params) => <TextField {...params} label="choose plot type" />}
           onInputChange = {(e) => setSelectedPlotType(e.target.innerHTML)}
         />
-
         {open || <Autocomplete
           options={col_names}
           sx={{ width: 300 }}
