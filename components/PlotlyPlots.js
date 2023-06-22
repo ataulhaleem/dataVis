@@ -56,8 +56,8 @@ const PlotlyPlots = (props) => {
         }
     }
 
-    console.log(x, xdata)
-    console.log(y, ydata)
+    // console.log(x, xdata)
+    // console.log(y, ydata)
 
 // console.log(ydata);
     //////////////////////////// Now for plot types

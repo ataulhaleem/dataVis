@@ -80,7 +80,7 @@ export default function Home() {
 		reader.onload = async ({ target }) => {
 			const csv = Papa.parse(target.result, { header: true });
 			const parsedData = csv?.data;
-      console.log(parsedData)
+      // console.log(parsedData)
 			setData(parsedData);
       	const columns = Object.keys(parsedData[0]);
 				setColNames(columns);

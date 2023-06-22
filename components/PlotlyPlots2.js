@@ -74,7 +74,7 @@ const PlotlyPlots = (props) => {
             plotLayout['yaxis'] = {}
             plotLayout.xaxis['title'] = x
             plotLayout.yaxis['title'] = y
-            console.log('modify it for many variables')
+            // console.log('modify it for many variables')
     
         }else if(plotyType == 'histogram' ){
             var plotData=[{type : 'histogram', x:xdata} ];
