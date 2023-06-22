@@ -17,7 +17,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { linReg } from '../components/utils';
 
-const allowedExtensions = ["csv", "tsv", "txt", "qassoc", "assoc"];
+const allowedExtensions = ["csv", "tsv"];
 
 export default function Home() {
   const [file, setFile] = useState("");
