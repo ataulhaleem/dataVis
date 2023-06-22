@@ -35,6 +35,12 @@ export default function Home() {
   const [state, setState] = useState({});
   const [url, setUrl] = useState('https://raw.githubusercontent.com/ataulhaleem/dataVis/main/data/modemPhenoData.csv');
 
+
+  const [xlable, setXlable] = useState('')
+  const [ylable, setYlable] = useState('')
+  const [plotTitle, setPlotTitle] = useState('')
+
+  
 	const handleChange = (event) => {
 		setState({
       ...state,
@@ -58,7 +64,10 @@ export default function Home() {
 			// Check the file extensions, if it not
 			// included in the allowed extensions
 			// we show the error
-			const fileExtension = inputFile?.type.split("/")[1];
+			// const fileExtension = inputFile?.type.split("/")[1];
+			const fileExtension = inputFile.name.split(".")[1];
+
+      console.log(fileExtension)
 			if (!allowedExtensions.includes(fileExtension)) {
 				setError("Please input a csv file");
 				return;
