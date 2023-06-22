@@ -21,7 +21,7 @@ export default function Header() {
     <Typography  variant='h6'>
     Usage:
       <ol>
-      <li>Choose project data OR select your own data (Allowed extensions: [.csv, .tsv, .txt, .qassoc, .assoc])</li>
+      <li>Choose project data OR select your own data (Allowed extensions: [.csv, .tsv])</li>
       <li>Press PARSE</li>
       <li>Choose plotting options</li>
       <li> Press PLOT</li>
