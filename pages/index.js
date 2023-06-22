@@ -141,7 +141,7 @@ export default function Home() {
 
   }
 
-  console.log("PlotSchema" , plotSchema)
+  // console.log("PlotSchema" , plotSchema)
 
   var dataSets = ['MODEM']
 
